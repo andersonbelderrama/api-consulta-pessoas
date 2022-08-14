@@ -151,11 +151,11 @@ class ConsultaController extends Controller
         //monta resultado de retorno da consulta
         $resultado = [
             'nome' => $nome,
-            'count' => count($nome_explode),
-            'similar_text' => similar_text("Osama bin Mohammed bin Awad bin Laden", "Usamah Bin Muhammad bin Awad bin Ladin", $percent),
-            'percent' => $percent,
             'nome_lista' => $nome_lista,
-            'nome_explode' => $nome_explode
+            'tst_count_explode' => count($nome_explode),
+            'tst_similar_text' => similar_text("Osama bin Mohammed bin Awad bin Laden", "Usamah Bin Muhammad bin Awad bin Ladin", $percent),
+            'tst_percent' => $percent,
+            'tst_nome_explode' => $nome_explode
         ];
 
 
