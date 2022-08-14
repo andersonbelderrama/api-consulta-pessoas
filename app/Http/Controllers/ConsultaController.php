@@ -15,28 +15,143 @@ class ConsultaController extends Controller
         $nome = $request->input('nome');
 
         //transforma nome em array de nomes
-        $nome_explode = explode(' ', $nome);
+        $nome_explode = explode(' ', $nome, 6);
 
         //buscando nome na lista
-        $nome_lista = ItemLista::with('lista:id,nome as lista')
-                    ->where('nome', 'like', '%' . $nome . '%')
-                    ->orWhere([
-                        ['nome', 'like', '%' . $nome_explode[0] . '%'],
-                        ['nome', 'like', '%' . $nome_explode[1] . '%']
-                    ])
-                    ->orWhere([
-                        ['nome', 'like', '%' . $nome_explode[2] . '%'],
-                        ['nome', 'like', '%' . $nome_explode[3] . '%']
-                    ])
-                    ->orWhere([
-                        ['nome', 'like', '%' . $nome_explode[4] . '%'],
-                        ['nome', 'like', '%' . $nome_explode[5] . '%']
-                    ])
-                    ->get(['nome','documento','motivo','lista_id']);
+        $query = ItemLista::with('lista:id,nome as lista')->where('nome', 'like', '%' . $nome . '%');
+
+        //se tiver mais ou igual 2 a nomes
+        if (count($nome_explode) >= 2) {
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%']
+            ]);
+        }
+
+        //se tiver mais ou igual a 3 nomes
+        if (count($nome_explode) >= 3) {
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%']
+            ]);
+
+        }
+
+        //se tiver mais ou igual a 4 nomes
+        if (count($nome_explode) >= 4) {
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%'],
+                ['nome', 'like', '%' . $nome_explode[3] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[3] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%'],
+                ['nome', 'like', '%' . $nome_explode[3] . '%']
+            ]);
+
+        }
+
+        //se tiver mais ou igual a 5 nomes
+        if (count($nome_explode) >= 5) {
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%'],
+                ['nome', 'like', '%' . $nome_explode[3] . '%'],
+                ['nome', 'like', '%' . $nome_explode[4] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%'],
+                ['nome', 'like', '%' . $nome_explode[3] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%'],
+                ['nome', 'like', '%' . $nome_explode[4] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[3] . '%'],
+                ['nome', 'like', '%' . $nome_explode[4] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[3] . '%'],
+                ['nome', 'like', '%' . $nome_explode[4] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%'],
+                ['nome', 'like', '%' . $nome_explode[3] . '%'],
+                ['nome', 'like', '%' . $nome_explode[4] . '%']
+            ]);
+
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%'],
+                ['nome', 'like', '%' . $nome_explode[3] . '%'],
+                ['nome', 'like', '%' . $nome_explode[4] . '%']
+            ]);
+
+        }
+
+        //se tiver mais de cinco nome
+        if (count($nome_explode) >= 6) {
+            $query->orWhere([
+                ['nome', 'like', '%' . $nome_explode[0] . '%'],
+                ['nome', 'like', '%' . $nome_explode[1] . '%'],
+                ['nome', 'like', '%' . $nome_explode[2] . '%'],
+                ['nome', 'like', '%' . $nome_explode[3] . '%'],
+                ['nome', 'like', '%' . $nome_explode[4] . '%'],
+                ['nome', 'like', '%' . $nome_explode[5] . '%']
+            ]);
+        }
+
+        $nome_lista = $query->get(['nome', 'documento', 'motivo', 'lista_id']);
 
         //monta resultado de retorno da consulta
         $resultado = [
             'nome' => $nome,
+            'count' => count($nome_explode),
             'similar_text' => similar_text("Osama bin Mohammed bin Awad bin Laden", "Usamah Bin Muhammad bin Awad bin Ladin", $percent),
             'percent' => $percent,
             'nome_lista' => $nome_lista,
