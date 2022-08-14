@@ -14,7 +14,7 @@
         "/consulta_nome": {
             "post": {
                 "tags": [
-                    "Consulta Nome"
+                    "Consulta por Nome"
                 ],
                 "summary": "Retorna resultado da consulta",
                 "description": "Retorna resultado da consulta",

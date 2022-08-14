@@ -194,4 +194,58 @@ class ConsultaController extends Controller
         return response()->json($http_response, $http_code);
 
     }
+
+
+    //consulta_documento
+    public function consulta_documento(Request $request)
+    {
+        //valida se campo nome foi preenchido
+        if(!$request->documento)
+        {
+            return response()->json(['status' => 'error', 'code' => 400, 'message' => 'Campo documento não foi preenchido'], 400);
+        }
+
+        //pega o nome da pessoa que esta sendo consultada
+        $documento = $request->input('documento');
+
+        //formatando documento para consulta
+        $documento = trim($documento);
+        $documento = str_replace(' ', '', $documento);
+        $documento = str_replace('.', '', $documento);
+        $documento = str_replace('-', '', $documento);
+        $documento = str_replace('/', '', $documento);
+
+        //buscando nome na lista
+        $query = ItemLista::with('lista:id,nome as lista')->where('nome', 'like', '%' . $documento . '%');
+
+        //executando query
+        $resultado = $query->get(['nome', 'documento', 'motivo', 'lista_id']);
+
+        //verificando se a consulta retornou algum resultado
+        if (count($resultado) > 0) {
+            $http_response = [
+                'status' => 'success',
+                'message' => 'Consulta realizada com sucesso',
+                'documento' => $documento,
+                'data' => $resultado
+            ];
+
+            $http_code = 200;
+
+        } else {
+            $http_response = [
+                'status' => 'success',
+                'message' => 'Nenhum resultado encontrado',
+                'documento' => $documento,
+                'data' => $resultado
+            ];
+
+            $http_code = 200;
+
+        }
+
+        return response()->json($http_response, $http_code);
+
+    }
+
 }

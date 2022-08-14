@@ -23,4 +23,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::post('consulta_nome', [ConsultaController::class, 'consulta_nome']);
+Route::post('consulta_documento', [ConsultaController::class, 'consulta_documento']);
 
