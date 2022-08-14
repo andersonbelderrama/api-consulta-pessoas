@@ -3,16 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Lista;
 use App\Models\ItemLista;
-
-
+use Exception;
 
 class ConsultaController extends Controller
 {
     //consulta_nome
     public function consulta_nome(Request $request)
     {
+        //valida se campo nome foi preenchido
+        if(!$request->nome)
+        {
+            return response()->json(['status' => 'error', 'code' => 400, 'message' => 'Campo nome não foi preenchido'], 400);
+        }
+
         //pega o nome da pessoa que esta sendo consultada
         $nome = $request->input('nome');
 
@@ -149,19 +153,45 @@ class ConsultaController extends Controller
         }
 
         //executando query
-        $nome_lista = $query->get(['nome', 'documento', 'motivo', 'lista_id']);
+        $resultado = $query->get(['nome', 'documento', 'motivo', 'lista_id']);
 
         //montando resultado de retorno da consulta
-        $resultado = [
-            'nome' => $nome,
-            'nome_lista' => $nome_lista,
-            'tst_count_explode' => count($nome_explode),
-            'tst_similar_text' => similar_text("Osama bin Mohammed bin Awad bin Laden", "Usamah Bin Muhammad bin Awad bin Ladin", $percent),
-            'tst_percent' => $percent,
-            'tst_nome_explode' => $nome_explode
-        ];
+        // $resultado = [
+        //     'status' => 'success',
+        //     'message' => 'Consulta realizada com sucesso',
+        //     'nome' => $nome,
+        //     'nome_lista' => $nome_lista,
+        //     'tst_count_explode' => count($nome_explode),
+        //     'tst_similar_text' => similar_text("Osama bin Mohammed bin Awad bin Laden", "Usamah Bin Muhammad bin Awad bin Ladin", $percent),
+        //     'tst_percent' => $percent,
+        //     'tst_nome_explode' => $nome_explode
+        // ];
 
 
-        return response()->json($resultado);
+        //verificando se a consulta retornou algum resultado
+        if (count($resultado) > 0) {
+            $http_response = [
+                'status' => 'success',
+                'message' => 'Consulta realizada com sucesso',
+                'nome' => $nome,
+                'data' => $resultado
+            ];
+
+            $http_code = 200;
+
+        } else {
+            $http_response = [
+                'status' => 'success',
+                'message' => 'Nenhum resultado encontrado',
+                'nome' => $nome,
+                'data' => $resultado
+            ];
+
+            $http_code = 200;
+
+        }
+
+        return response()->json($http_response, $http_code);
+
     }
 }

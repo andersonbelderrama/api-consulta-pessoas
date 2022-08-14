@@ -1,17 +1,17 @@
 swagger: "2.0"
 info:
-  title: "Hello World"
-  description: "API para retornar um Hello World"
+  title: "API Consulta Pessoas"
+  description: "API para consultar pessoas em listas"
   version: 1.0.0
 host: "localhost:8000"
 basePath: /api/
 schemes:
   - http
 paths:
-  /hello:
-    get:
-      summary: "Retorna um JSON com a mensagem e hello world"
-      description: "Descrição opcional"
+  /consulta_nome:
+    post:
+      summary: "Retorna um JSON com resultado da consulta"
+      description: ""
       responses:
         "200":
           description: "successful operation"
