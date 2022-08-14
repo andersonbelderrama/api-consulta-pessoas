@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Lista;
 use App\Models\ItemLista;
 
+
+
 class ConsultaController extends Controller
 {
     //consulta_nome
@@ -146,9 +148,10 @@ class ConsultaController extends Controller
             ]);
         }
 
+        //executando query
         $nome_lista = $query->get(['nome', 'documento', 'motivo', 'lista_id']);
 
-        //monta resultado de retorno da consulta
+        //montando resultado de retorno da consulta
         $resultado = [
             'nome' => $nome,
             'nome_lista' => $nome_lista,

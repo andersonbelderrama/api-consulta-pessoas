@@ -1,0 +1,18 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Consulta Pessoas",
+        "version": "0.1"
+    },
+    "paths": {
+        "/consulta_nome": {
+            "get": {
+                "responses": {
+                    "200": {
+                        "description": "Display a listing of projects."
+                    }
+                }
+            }
+        }
+    }
+}
