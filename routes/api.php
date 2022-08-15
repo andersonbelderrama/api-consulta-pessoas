@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConsultaController;
@@ -16,11 +17,13 @@ use App\Http\Controllers\ConsultaController;
 */
 
 // Public routes
-Route::post('/login', [, 'login']);
+Route::post('/login', [AuthController::class, 'login']);
 
 
 // Protected routes
 Route::middleware('auth:sanctum')->group(function(){
+    Route::post('/logout', [AuthController::class, 'logout']);
+
     Route::post('/consulta_nome', [ConsultaController::class, 'consulta_nome']);
     Route::post('/consulta_documento', [ConsultaController::class, 'consulta_documento']);
 });
