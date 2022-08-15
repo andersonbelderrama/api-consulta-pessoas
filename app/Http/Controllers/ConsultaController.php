@@ -216,7 +216,7 @@ class ConsultaController extends Controller
         $documento = str_replace('/', '', $documento);
 
         //buscando nome na lista
-        $query = ItemLista::with('lista:id,nome as lista')->where('nome', 'like', '%' . $documento . '%');
+        $query = ItemLista::with('lista:id,nome as lista')->whereRaw("REPLACE(REPLACE(REPLACE(documento,'.',''),'-',''),' ','') like ? ", $documento);
 
         //executando query
         $resultado = $query->get(['nome', 'documento', 'motivo', 'lista_id']);
