@@ -23,7 +23,13 @@ class ConsultaController extends Controller
         $nome_explode = explode(' ', $nome, 6);
 
         //buscando nome na lista
-        $query = ItemLista::with('lista:id,nome as lista')->where('nome', 'like', '%' . $nome . '%');
+        $query = ItemLista::with('lista:id,nome as lista');//falta o filtro de tipo de lista
+
+
+
+
+        //buscando nome completo na lista
+        $query->where('nome', 'like', '%' . $nome . '%');
 
         //se tiver mais ou igual 2 a nomes
         if (count($nome_explode) >= 2) {
@@ -242,7 +248,7 @@ class ConsultaController extends Controller
     {
 
         //valida se campo pais foi preenchido
-        if (!$request->documento) {
+        if (!$request->pais) {
             return response()->json(['status' => 'error', 'code' => 400, 'message' => 'Campo documento não foi preenchido'], 400);
         }
 
@@ -253,9 +259,11 @@ class ConsultaController extends Controller
         $pais = trim($pais);
         $pais = str_replace(' ', '', $pais);
 
-
         //buscando pais na lista
-        $query = ItemLista::with('lista:id,nome as lista')->whereRaw("nome like ? ", $pais);
+        $query = ItemLista::with('lista:id, nome as lista, tipo')->whereRaw("nome like ? ", $pais);
+
+        //listas de pessoas
+        $query->where('tipo', '=', 'pais');
 
         //executando query
         $resultado = $query->get(['nome', 'documento', 'motivo', 'lista_id']);

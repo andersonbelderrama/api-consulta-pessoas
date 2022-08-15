@@ -12,6 +12,7 @@ class Lista extends Model
     protected $fillable = [
         'nome',
         'descricao',
+        'tipo',
     ];
 
     public function itens_lista()
