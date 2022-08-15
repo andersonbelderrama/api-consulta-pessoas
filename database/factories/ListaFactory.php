@@ -19,6 +19,7 @@ class ListaFactory extends Factory
         return [
             'nome' => $this->faker->word,
             'descricao' => $this->faker->sentence,
+            'tipo' => ['pessoa', 'pais'][rand(0, 1)],
             'created_at' => $this->faker->dateTimeThisYear,
             'updated_at' => $this->faker->dateTimeThisYear,
         ];

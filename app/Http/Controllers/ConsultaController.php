@@ -12,8 +12,7 @@ class ConsultaController extends Controller
     public function consulta_nome(Request $request)
     {
         //valida se campo nome foi preenchido
-        if(!$request->nome)
-        {
+        if (!$request->nome) {
             return response()->json(['status' => 'error', 'code' => 400, 'message' => 'Campo nome não foi preenchido'], 400);
         }
 
@@ -52,7 +51,6 @@ class ConsultaController extends Controller
                 ['nome', 'like', '%' . $nome_explode[1] . '%'],
                 ['nome', 'like', '%' . $nome_explode[2] . '%']
             ]);
-
         }
 
         //se tiver mais ou igual a 4 nomes
@@ -82,7 +80,6 @@ class ConsultaController extends Controller
                 ['nome', 'like', '%' . $nome_explode[2] . '%'],
                 ['nome', 'like', '%' . $nome_explode[3] . '%']
             ]);
-
         }
 
         //se tiver mais ou igual a 5 nomes
@@ -137,7 +134,6 @@ class ConsultaController extends Controller
                 ['nome', 'like', '%' . $nome_explode[3] . '%'],
                 ['nome', 'like', '%' . $nome_explode[4] . '%']
             ]);
-
         }
 
         //se tiver mais de cinco nome
@@ -178,7 +174,6 @@ class ConsultaController extends Controller
             ];
 
             $http_code = 200;
-
         } else {
             $http_response = [
                 'status' => 'success',
@@ -188,20 +183,17 @@ class ConsultaController extends Controller
             ];
 
             $http_code = 200;
-
         }
 
         return response()->json($http_response, $http_code);
-
     }
 
 
     //consulta_documento
     public function consulta_documento(Request $request)
     {
-        //valida se campo nome foi preenchido
-        if(!$request->documento)
-        {
+        //valida se campo documento foi preenchido
+        if (!$request->documento) {
             return response()->json(['status' => 'error', 'code' => 400, 'message' => 'Campo documento não foi preenchido'], 400);
         }
 
@@ -231,7 +223,6 @@ class ConsultaController extends Controller
             ];
 
             $http_code = 200;
-
         } else {
             $http_response = [
                 'status' => 'success',
@@ -241,11 +232,55 @@ class ConsultaController extends Controller
             ];
 
             $http_code = 200;
-
         }
 
         return response()->json($http_response, $http_code);
-
     }
 
+    //consulta_pais
+    public function consulta_pais(Request $request)
+    {
+
+        //valida se campo pais foi preenchido
+        if (!$request->documento) {
+            return response()->json(['status' => 'error', 'code' => 400, 'message' => 'Campo documento não foi preenchido'], 400);
+        }
+
+        //pega o pais que esta sendo consultada
+        $pais = $request->input('pais');
+
+        //formatando pais para consulta
+        $pais = trim($pais);
+        $pais = str_replace(' ', '', $pais);
+
+
+        //buscando pais na lista
+        $query = ItemLista::with('lista:id,nome as lista')->whereRaw("nome like ? ", $pais);
+
+        //executando query
+        $resultado = $query->get(['nome', 'documento', 'motivo', 'lista_id']);
+
+        //verificando se a consulta retornou algum resultado
+        if (count($resultado) > 0) {
+            $http_response = [
+                'status' => 'success',
+                'message' => 'Consulta realizada com sucesso',
+                'pais' => $pais,
+                'data' => $resultado
+            ];
+
+            $http_code = 200;
+        } else {
+            $http_response = [
+                'status' => 'success',
+                'message' => 'Nenhum resultado encontrado',
+                'pais' => $pais,
+                'data' => $resultado
+            ];
+
+            $http_code = 200;
+        }
+
+        return response()->json($http_response, $http_code);
+    }
 }
