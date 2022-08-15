@@ -15,13 +15,14 @@ use App\Http\Controllers\ConsultaController;
 |
 */
 
+// Public routes
+Route::post('/login', [, 'login']);
 
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Protected routes
+Route::middleware('auth:sanctum')->group(function(){
+    Route::post('/consulta_nome', [ConsultaController::class, 'consulta_nome']);
+    Route::post('/consulta_documento', [ConsultaController::class, 'consulta_documento']);
 });
 
-
-Route::post('consulta_nome', [ConsultaController::class, 'consulta_nome']);
-Route::post('consulta_documento', [ConsultaController::class, 'consulta_documento']);
 
